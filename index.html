@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bloquons l’extrême droite et ses relais</title>
+<style>
+:root{--bg:#fff;--fg:#1c1c1e;--mut:#6b6b70;--line:#e3e3e8;--card:#f6f6f8;--acc:#1f5fbf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17181b;--fg:#ececf0;--mut:#9a9aa3;--line:#2c2d33;--card:#202126;--acc:#7aa7ff}}
+:root[data-theme="dark"]{--bg:#17181b;--fg:#ececf0;--mut:#9a9aa3;--line:#2c2d33;--card:#202126;--acc:#7aa7ff}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:1.4rem;margin:0 0 4px}
+p.n{color:var(--mut);font-size:.9rem;margin:6px 0}
+.bar{display:flex;justify-content:space-between;align-items:center;margin:16px 0 8px;color:var(--mut);font-size:.9rem}
+button{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;font:inherit}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line)}
+li:nth-child(odd){background:var(--card)}
+li input{width:20px;height:20px;flex:none}
+li .nm{flex:1;min-width:0}
+li .nm b{display:block}
+li .nm span{color:var(--mut);font-size:.8rem}
+li.done .nm{opacity:.5;text-decoration:line-through}
+.ic{display:flex;gap:8px;flex:none}
+.ic a{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;color:#fff;text-decoration:none}
+.ic svg{width:18px;height:18px;fill:#fff}
+.fb{background:#1877f2}.ig{background:#d62976}.li{background:#0a66c2}.x{background:#111}
+</style>
+</head>
+<body>
+<main>
+<h1>Bloquons l’extrême droite et ses relais</h1>
+<p class="n">Liste non exhaustive. La progression est enregistrée automatiquement dans ce navigateur. Utilisez l’export pour garder une copie ou la transférer.</p>
+<input id="q" type="search" placeholder="Filtrer par nom, parti ou catégorie" style="width:100%;box-sizing:border-box;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font:inherit;margin-top:8px">
+<div class="bar"><span id="cnt"></span><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"><button id="export">Exporter</button><button id="importBtn">Importer</button><input id="importFile" type="file" accept="application/json,.json" hidden><button id="rst">Tout décocher</button></div></div><p class="n" id="saveStatus" role="status" aria-live="polite"></p>
+<ul id="list"></ul>
+<p class="n" style="margin-top:18px">Sources de vérification : <a href="https://rassemblementnational.fr/instances/bureau-national" target="_blank" rel="noopener noreferrer">bureau national du RN</a>, <a href="https://www.parti-reconquete.fr/equipe" target="_blank" rel="noopener noreferrer">équipe de Reconquête!</a>, <a href="https://dassault.fr/filiale/groupe-figaro" target="_blank" rel="noopener noreferrer">Groupe Figaro (Dassault)</a>, <a href="https://www.bollore.com/fr/portefeuille-de-participation/" target="_blank" rel="noopener noreferrer">participations du Groupe Bolloré</a>. À noter : BFM/RMC a été racheté par CMA CGM en 2024 ; ces comptes figurent déjà dans la liste, mais ne relèvent pas de Bolloré/Dassault. Les liens de recherche servent à retrouver les comptes ; vérifiez le compte avant de le bloquer.</p>
+</main>
+<script>
+var P=[["Éric", "Ciotti", "Président de l’UDR, maire de Nice", "UDR"], ["Alexandre", "Allegret-Pilot", "Député, Gard", "UDR"], ["Charles", "Alloncle", "Député, Hérault", "UDR"], ["Matthieu", "Bloch", "Député, Doubs", "UDR"], ["Bernard", "Chaix", "Député, Alpes-Maritimes", "UDR"], ["Marc", "Chavent", "Député, Ain", "UDR"], ["Christelle", "D’Intorni", "Députée, Alpes-Maritimes", "UDR"], ["Olivier", "Fayssat", "Député, Bouches-du-Rhône", "UDR"], ["Bartolomé", "Lenoir", "Député, Creuse", "UDR"], ["Hanane", "Mansouri", "Députée, Isère", "UDR"], ["Maxime", "Michelet", "Député, Marne", "UDR"], ["Éric", "Michoux", "Député, Saône-et-Loire", "UDR"], ["Sophie", "Ricourt Vaginay", "Députée, Alpes-de-Haute-Provence", "UDR"], ["Vincent", "Trébuchet", "Député, Ardèche", "UDR"], ["Antoine", "Valentin", "Député, Haute-Savoie", "UDR"], ["Gérault", "Verny", "Député, Bouches-du-Rhône", "UDR"], ["Marine", "Le Pen", "Présidente du groupe RN, Pas-de-Calais", "RN"], ["Jordan", "Bardella", "Président du RN, eurodéputé", "RN"], ["Franck", "Allisio", "Bouches-du-Rhône", "RN"], ["Maxime", "Amblard", "Meuse", "RN"], ["Bénédicte", "Auzanot", "Vaucluse", "RN"], ["Philippe", "Ballard", "Oise", "RN"], ["Anchya", "Bamana", "Mayotte", "RN"], ["Romain", "Baubry", "Bouches-du-Rhône", "RN"], ["José", "Beaurain", "Aisne", "RN"], ["Christophe", "Bentz", "Haute-Marne", "RN"], ["Théo", "Bernhardt", "Bas-Rhin", "RN"], ["Guillaume", "Bigot", "Territoire de Belfort", "RN"], ["Bruno", "Bilde", "Pas-de-Calais", "RN"], ["Emmanuel", "Blairy", "Pas-de-Calais", "RN"], ["Sophie", "Blanc", "Pyrénées-Orientales", "RN"], ["Frédéric", "Boccaletti", "Var", "RN"], ["Anthony", "Boulogne", "Meurthe-et-Moselle", "RN"], ["Jorys", "Bovet", "Allier", "RN"], ["Jérôme", "Buisson", "Ain", "RN"], ["Bernard", "Chaumeil", "Hérault", "RN"], ["Sébastien", "Chenu", "Nord", "RN"], ["Roger", "Chudeau", "Loir-et-Cher", "RN"], ["Bruno", "Clavet", "Pas-de-Calais", "RN"], ["Caroline", "Colombier", "Charente", "RN"], ["Nathalie", "Da Conceicao Carvalho", "Essonne", "RN"], ["Marc", "de Fleurian", "Pas-de-Calais", "RN"], ["Hervé", "de Lépinau", "Vaucluse", "RN"], ["Catherine", "Dellong Meng", "Gard", "RN"], ["Jocelyn", "Dessigny", "Aisne", "RN"], ["Sandrine", "Dogor-Such", "Pyrénées-Orientales", "RN"], ["Nicolas", "Dragon", "Aisne", "RN"], ["Alexandre", "Dufosset", "Nord", "RN"], ["Gaëtan", "Dussausaye", "Vosges", "RN"], ["Aurélien", "Dutremble", "Saône-et-Loire", "RN"], ["Auguste", "Evrard", "Pas-de-Calais", "RN"], ["Frédéric", "Falcon", "Aude", "RN"], ["Muriel", "Fiol", "Var", "RN"], ["Guillaume", "Florquin", "Nord", "RN"], ["Emmanuel", "Fouquart", "Bouches-du-Rhône", "RN"], ["Thierry", "Frappé", "Pas-de-Calais", "RN"], ["Julien", "Gabarron", "Hérault", "RN"], ["Stéphanie", "Galzy", "Hérault", "RN"], ["Laurence", "Gardet", "Gard", "RN"], ["Jonathan", "Gery", "Rhône", "RN"], ["Benoit", "Gilhet", "Hérault", "RN"], ["Yoann", "Gillet", "Gard", "RN"], ["Christian", "Girard", "Alpes-de-Haute-Provence", "RN"], ["Antoine", "Golliot", "Pas-de-Calais", "RN"], ["José", "Gonzalez", "Bouches-du-Rhône", "RN"], ["Florence", "Goulet", "Meuse", "RN"], ["Géraldine", "Grangier", "Doubs", "RN"], ["Monique", "Griseti", "Bouches-du-Rhône", "RN"], ["Julien", "Guibert", "Nièvre", "RN"], ["Michel", "Guiniot", "Oise", "RN"], ["Jordan", "Guitton", "Aube", "RN"], ["Marine", "Hamelet", "Tarn-et-Garonne", "RN"], ["Timothée", "Houssin", "Eure", "RN"], ["Sébastien", "Humbert", "Vosges", "RN"], ["Laurent", "Jacobelli", "Moselle", "RN"], ["Pascal", "Jenft", "Moselle", "RN"], ["Alexis", "Jolly", "Isère", "RN"], ["Tiffany", "Joncour", "Rhône", "RN"], ["Édouard", "Jordan", "Aude", "RN"], ["Florence", "Joubert", "Dordogne", "RN"], ["Hélène", "Laporte", "Lot-et-Garonne", "RN"], ["Laure", "Lavalette", "Var", "RN"], ["Robert", "Le Bourgeois", "Seine-Maritime", "RN"], ["Julie", "Lechanteux", "Var", "RN"], ["Nadine", "Lechon", "Dordogne", "RN"], ["Gisèle", "Lelouis", "Bouches-du-Rhône", "RN"], ["Katiana", "Levavasseur", "Eure", "RN"], ["Julien", "Limongi", "Seine-et-Marne", "RN"], ["René", "Lioret", "Côte-d’Or", "RN"], ["Christine", "Loir", "Eure", "RN"], ["Marie-France", "Lorho", "Vaucluse", "RN"], ["Philippe", "Lottiaux", "Var", "RN"], ["Alexandre", "Loubet", "Moselle", "RN"], ["David", "Magnier", "Oise", "RN"], ["Claire", "Marais-Beuil", "Oise", "RN"], ["Matthieu", "Marchio", "Nord", "RN"], ["Pascal", "Markowsky", "Charente-Maritime", "RN"], ["Patrice", "Martin", "Seine-Maritime", "RN"], ["Michèle", "Martinez", "Pyrénées-Orientales", "RN"], ["Kévin", "Mauvieux", "Eure", "RN"], ["Nicolas", "Meizonnet", "Gard", "RN"], ["Joëlle", "Mélin", "Bouches-du-Rhône", "RN"], ["Yaël", "Ménaché", "Somme", "RN"], ["Thomas", "Ménagé", "Loiret", "RN"], ["Pierre", "Meurin", "Gard", "RN"], ["Serge", "Muller", "Dordogne", "RN"], ["Julien", "Odoul", "Yonne", "RN"], ["Caroline", "Parmentier", "Pas-de-Calais", "RN"], ["Thierry", "Perez", "Isère", "RN"], ["Kévin", "Pfeffer", "Moselle", "RN"], ["Lisette", "Pollet", "Drôme", "RN"], ["Stéphane", "Rambaud", "Var", "RN"], ["Angélique", "Ranc", "Aube", "RN"], ["Julien", "Rancoule", "Aude", "RN"], ["Matthias", "Renault", "Somme", "RN"], ["Catherine", "Rimbert", "Vaucluse", "RN"], ["Joseph", "Rivière", "La Réunion", "RN"], ["Laurence", "Robert-Dehault", "Haute-Marne", "RN"], ["Béatrice", "Roullaud", "Seine-et-Marne", "RN"], ["Sophie-Laurence", "Roy", "Yonne", "RN"], ["Anaïs", "Sabatini", "Pyrénées-Orientales", "RN"], ["Alexandre", "Sabatou", "Oise", "RN"], ["Emeric", "Salmon", "Haute-Saône", "RN"], ["Philippe", "Schreck", "Var", "RN"], ["Emmanuel", "Taché", "Bouches-du-Rhône", "RN"], ["Jean-Philippe", "Tanguy", "Somme", "RN"], ["Michaël", "Taverne", "Nord", "RN"], ["Thierry", "Tesson", "Nord", "RN"], ["Lionel", "Tivoli", "Alpes-Maritimes", "RN"], ["Gabriel", "Tomatis", "Alpes-Maritimes", "RN"], ["Romain", "Tonussi", "Bouches-du-Rhône", "RN"], ["Cyril", "Tribuiani", "Alpes-Maritimes", "RN"], ["Antoine", "Villedieu", "Haute-Saône", "RN"], ["Frédéric-Pierre", "Vos", "Oise", "RN"], ["Frédéric", "Weber", "Meurthe-et-Moselle", "RN"], ["Eddy", "Casterman", "Aisne (apparenté)", "RN"], ["Thibaut", "Monnier", "Drôme (apparenté)", "RN"], ["Anne", "Sicard", "Val-d’Oise (apparentée)", "RN"], ["Christine", "Kelly", "", "Personnalité"], ["Raphaël", "Enthoven", "", "Personnalité"], ["", "La Cocarde Sorbonne", "", "Collectif"], ["", "La Cocarde Tours", "", "Collectif"], ["", "La Cocarde Nanterre", "", "Collectif"], ["", "La Cocarde Lille", "", "Collectif"], ["", "La Cocarde Etudiante", "", "Collectif"], ["", "La Cocarde Montpellier", "", "Collectif"], ["", "Cocarde Étudiante", "", "Collectif"], ["Julien", "Sanchez", "", "Personnalité"], ["", "Valeurs actuelles", "", "Média"], ["", "Yona Faedda collectif Némésis", "", "Collectif"], ["", "Collectif Némésis", "", "Collectif"], ["", "Mathilda - Collectif Némésis", "", "Collectif"], ["Tatiana", "Ventôse", "", "Personnalité"], ["Jordan", "Florentin", "", "Personnalité"], ["", "Le Figaro Culture", "", "Média"], ["", "Le Figaro", "", "Média"], ["Prisca", "Thevenot", "", "Personnalité"], ["Gabriel", "Attal", "", "Personnalité"], ["Emmanuel", "Macron", "", "Personnalité"], ["Sébastien", "Lecornu", "", "Personnalité"], ["David", "Lisnard", "", "Personnalité"], ["", "France En Perdition", "", "Compte"], ["Élodie", "Le Roy", "", "Personnalité"], ["", "Gala", "", "Média"], ["Jean Marc", "Morandini", "", "Personnalité"], ["", "Météocity", "", "Média"], ["", "Télé Loisirs", "", "Média"], ["", "RFM", "", "Média"], ["", "JDD Magazine", "", "Média"], ["", "Europe 2", "", "Média"], ["", "CNEWS Sport", "", "Média"], ["", "CANAL+ RUGBY", "", "Média"], ["", "Canal+ Cameroun", "", "Média"], ["", "CANAL+ Réunion", "", "Média"], ["", "CANAL+ RDC", "", "Média"], ["", "CANAL+ SPORT Afrique", "", "Média"], ["", "CANAL+ MotoGP", "", "Média"], ["", "CANAL+ FOOT", "", "Média"], ["", "CANAL+", "", "Média"], ["Sylvie", "Goy-Chavent", "", "Personnalité"], ["Aymeric", "Durox", "", "Personnalité"], ["Joshua", "Hochart", "", "Personnalité"], ["Christopher", "Szczurek", "", "Personnalité"], ["Thierry", "d’Aigremont", "", "Personnalité"], ["Carine", "Leroy", "", "Personnalité"], ["Léon", "Levasseur", "", "Personnalité"], ["Manon", "Bouquin", "", "Personnalité"], ["Laura", "Veneau", "", "Personnalité"], ["Florent", "DUFAU", "", "Personnalité"], ["Grégoire", "de Fournas", "", "Personnalité"], ["Anne", "Charry", "", "Personnalité"], ["", "Dumas Christine", "", "Compte"], ["", "Marie Nathalie RN Medoc", "", "Compte"], ["Frédérique", "Joint", "", "Personnalité"], ["Margaux", "Taillefer", "", "Personnalité"], ["Nicolas", "SANCH", "", "Personnalité"], ["Sylvie", "Josserand", "", "Personnalité"], ["Marie-Pierre", "Callet", "", "Personnalité"], ["Fabien", "Bravi", "", "Personnalité"], ["Gaëlle", "Frontoni", "", "Personnalité"], ["Laurent", "Castillo", "", "Personnalité"], ["Jean", "Messiha", "", "Personnalité"], ["Gilbert", "Collard", "", "Personnalité"], ["", "BFM Grand Littoral", "", "Média"], ["", "BFM Toulon Var", "", "Média"], ["", "BFM DICI", "", "Média"], ["", "BFM Normandie", "", "Média"], ["", "BFM Alsace", "", "Média"], ["", "BFM People", "", "Média"], ["", "BFM Marseille Provence", "", "Média"], ["", "BFM Politique", "", "Média"], ["", "BFM Nice Côte d’azur", "", "Média"], ["", "BFM Grand Lille", "", "Média"], ["", "BFM Lyon", "", "Média"], ["", "BFM Paris Île-de-France", "", "Média"], ["", "BFM Business", "", "Média"], ["Nicolas", "Bay", "", "Personnalité"], ["Laurence", "Trochu", "", "Personnalité"], ["Guillaume", "Peltier", "", "Personnalité"], ["Eric", "Zemmour", "", "Personnalité"], ["Aurélien", "Lopez-Liguori", "", "Personnalité"], ["Frank", "Giletti", "", "Personnalité"], ["Edwige", "Diaz", "", "Personnalité"], ["Christine", "Engrand", "", "Personnalité"], ["Pierrick", "Berteloot", "", "Personnalité"], ["", "Rassemblement National", "", "Parti"], ["Matthieu", "Valet", "", "Personnalité"], ["", "BFMTV", "", "Média"], ["Louis", "Aliot", "", "Personnalité"], ["", "Le Point", "", "Média"], ["Bruno", "Retailleau", "", "Personnalité"], ["", "Europe 1", "", "Média"], ["Pascal", "Praud", "", "Personnalité"], ["Alice", "Cordier", "", "Personnalité"], ["Sarah", "Knafo", "", "Personnalité"], ["", "JDD", "", "Média"], ["François-Xavier", "Bellamy", "", "Personnalité"], ["", "Frontières Média", "", "Média"], ["Marion", "Maréchal", "", "Personnalité"], ["", "CNEWS", "", "Média"]];
+P.push(
+ ["Alexandra", "Masson", "Députée, bureau national du RN", "RN"],
+ ["Wallerand", "de Saint Just", "Bureau national du RN", "RN"],
+ ["Charles-Henri", "Gallois", "Conseiller économique du président du RN", "RN"],
+ ["Audrey", "Guibert", "Bureau national du RN", "RN"],
+ ["Ludovic", "Pajot", "Maire, bureau national du RN", "RN"],
+ ["François", "Paradol", "Bureau national du RN", "RN"],
+ ["Christopher", "Szczurek", "Sénateur, bureau national du RN", "RN"],
+ ["Pierre-Romain", "Thionnet", "Député européen, bureau national du RN", "RN"],
+ ["Rody", "Tolassy", "Député européen, bureau national du RN", "RN"],
+ ["Emma", "Vallain", "Bureau national du RN", "RN"],
+ ["", "RECONQUÊTE!", "Compte officiel du parti", "Parti"],
+ ["", "Le Figaro Magazine", "Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "Madame Figaro", "Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "Le Journal des Femmes", "CCM Benchmark · Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "L’Internaute", "CCM Benchmark · Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "Le Journal du Net", "CCM Benchmark · Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "Droit-Finances", "CCM Benchmark · Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "La Chaîne Météo", "Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "Figaro TV", "Groupe Figaro · Groupe Dassault", "Média"],
+ ["", "Figaro Radio", "Groupe Figaro · Groupe Dassault", "Média"]
+);
+var N=[["fb","Facebook","facebook.com","M13.5 21v-7.5h2.5l.5-3h-3V8.6c0-.9.3-1.5 1.6-1.5H16.600V4.400c-.3 0-1.200-.1-2.300-.1-2.300 0-3.800 1.400-3.800 3.900v2.300H8v3h2.500V21z"],["ig","Instagram","instagram.com","M7.500 3h9A4.500 4.500 0 0 1 21 7.500v9a4.500 4.500 0 0 1-4.500 4.500h-9A4.500 4.500 0 0 1 3 16.500v-9A4.500 4.500 0 0 1 7.500 3zm0 1.800A2.700 2.700 0 0 0 4.800 7.500v9a2.700 2.700 0 0 0 2.700 2.700h9a2.700 2.700 0 0 0 2.700-2.700v-9a2.700 2.700 0 0 0-2.700-2.700zM12 7.500a4.500 4.500 0 1 1 0 9 4.500 4.500 0 0 1 0-9zm0 1.800a2.700 2.700 0 1 0 0 5.400 2.700 2.700 0 0 0 0-5.400zm4.800-3.200a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"],["li","LinkedIn","linkedin.com","M5 9h3v10H5zM6.500 4.500a1.700 1.700 0 1 1 0 3.400 1.700 1.700 0 0 1 0-3.400zM10 9h2.900v1.400c.5-.9 1.600-1.700 3.200-1.700 3.100 0 3.900 2 3.900 4.700V19h-3v-5c0-1.200-.1-2.600-1.700-2.600S13 12.700 13 14v5h-3z"],["x","X","x.com","M17.500 3h3l-6.600 7.600L21.700 21h-6.100l-4.800-6.300L5.300 21h-3l7.100-8.100L2 3h6.200l4.300 5.700zm-1.100 16.200h1.700L7.500 4.700H5.700z"]];
+var KEY="blocage-list-progress-v2",OLD_KEY="udr-rn-checks",S={};
+function rowId(p){return [p[3],p[0],p[1]].join("|").toLocaleLowerCase("fr").normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+try{
+ var current=localStorage.getItem(KEY);
+ if(current){S=JSON.parse(current)||{}}
+ else {
+  var old=JSON.parse(localStorage.getItem(OLD_KEY)||"{}");
+  Object.keys(old).forEach(function(i){if(old[i]&&P[i])S[rowId(P[i])]=true});
+  localStorage.setItem(KEY,JSON.stringify(S));
+ }
+}catch(e){S={}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));document.getElementById("saveStatus").textContent="Progression enregistrée automatiquement."}catch(e){document.getElementById("saveStatus").textContent="La sauvegarde automatique est indisponible. Exportez une copie de sauvegarde."}}
+var ul=document.getElementById("list");
+P.forEach(function(p,i){
+ var li=document.createElement("li");
+ var id=rowId(p);var cb=document.createElement("input");cb.type="checkbox";cb.checked=!!S[id];
+ cb.setAttribute("aria-label","Marquer "+p[0]+" "+p[1]);
+ var nm=document.createElement("div");nm.className="nm";
+ nm.innerHTML="<b></b><span></span>";
+ nm.querySelector("b").textContent=p[0]?p[1].toUpperCase()+" "+p[0]:p[1];
+ nm.querySelector("span").textContent=p[2]?p[3]+" · "+p[2]:p[3];
+ var ic=document.createElement("div");ic.className="ic";
+ N.forEach(function(n){
+  var a=document.createElement("a");a.className=n[0];a.target="_blank";a.rel="noopener noreferrer";
+  a.title=n[1]+" – "+p[0]+" "+p[1];
+  a.href="https://www.google.com/search?q="+encodeURIComponent('"'+p[0]+" "+p[1]+'" site:'+n[2]);
+  a.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+n[3]+'"/></svg>';
+  ic.appendChild(a);
+ });
+ function upd(){li.className=cb.checked?"done":"";var c=Object.keys(S).filter(function(k){return S[k]}).length;document.getElementById("cnt").textContent=c+" / "+P.length+" cochés"}
+ cb.onchange=function(){S[id]=cb.checked;save();upd()};
+ li.appendChild(cb);li.appendChild(nm);li.appendChild(ic);ul.appendChild(li);
+ li._u=upd;
+});
+function all(){Array.prototype.forEach.call(ul.children,function(l){l._u()})}
+document.getElementById("rst").onclick=function(){if(!confirm("Effacer toute la progression enregistrée ?"))return;S={};save();Array.prototype.forEach.call(ul.querySelectorAll("input"),function(c){c.checked=false});all()};
+document.getElementById("export").onclick=function(){var blob=new Blob([JSON.stringify({format:"blocage-list-progress-v2",exportedAt:new Date().toISOString(),checked:S},null,2)],{type:"application/json"});var a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="progression-blocage.json";a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},1000)};
+document.getElementById("importBtn").onclick=function(){document.getElementById("importFile").click()};
+document.getElementById("importFile").onchange=function(){var f=this.files&&this.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){try{var data=JSON.parse(reader.result);var incoming=data.checked||data;if(!incoming||typeof incoming!=="object")throw Error();S=incoming;save();location.reload()}catch(e){document.getElementById("saveStatus").textContent="Fichier de sauvegarde invalide."}};reader.readAsText(f);this.value=""};
+document.getElementById("q").oninput=function(){var v=this.value.toLowerCase();Array.prototype.forEach.call(ul.children,function(l){l.style.display=l.textContent.toLowerCase().indexOf(v)<0?"none":"flex"})};
+all();
+</script>
+</body>
+</html>
